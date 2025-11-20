@@ -1,73 +1,31 @@
-# React + TypeScript + Vite
+# 프론트엔드 개발자 과제(2025.11.17 - 2025.11.21)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## :octocat: 주제: 대시보드 페이지 개발
+- 홈 대시보드 페이지
+- 거래내역 페이지
+- 가맹점 목록 페이지
+- 가맹점 상세 조회
 
-Currently, two official plugins are available:
+## 📦 개발환경
+- Node.js: 20.19.5
+- npm: 10.8.2
+- React: 19.2.0
+- Vite(Rolldown-Vite): 7.2.2
+- TypeScript: 5.9.3
+- ESLINT: 9.39.1
+- ECMAScript: ES2023
+- tailwindcss: 4.1.17
+- fontawesome: 7.1.0
+- axios: 1.13.2
+- chart.js: 4.5.1
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 디자인 의도 및 주요 UI/UX 포인트
+전문적 집중도를 위해 어두운 사이드바와 데이터의 성공을 상징하는 녹색(\#3AC48D) 액센트를 적용했습니다.<br>
+useMemo 기반 페이지네이션과 웹 접근성이 높은 표준 테이블을 사용하여 방대한 거래 내역의 가독성 및 효율적인 처리를 확보했습니다.<br>
+최종적으로, 상태 배지와 모달 등을 통해 정보를 직관적으로 파악하고 빠른 작업을 수행하도록 설계된 대시보드입니다.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 💻 실행방법
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+npm install
+npm run dev
 ```
