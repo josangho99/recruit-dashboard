@@ -69,7 +69,7 @@ function PaymentList() {
   const thClass = "py-5 text-center text-base font-semibold text-gray-600 uppercase";
 
   return (
-    <div className="flex h-full w-full flex-col rounded-xl bg-white shadow-lg">
+    <div className="flex h-full w-full flex-col bg-white shadow-lg">
       <div className="flex flex-row gap-4 p-4">
         <select
           value={filterStatus}
