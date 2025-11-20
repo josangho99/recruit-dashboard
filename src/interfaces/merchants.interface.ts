@@ -27,3 +27,14 @@ export interface MerchantsDetail {
   registeredAt: string;
   updatedAt: string;
 }
+
+export interface MerchantsRanking {
+  mchtCode: string;
+  totalAmount: number;
+}
+
+export interface PodiumStepProps {
+  mchtName: string;
+  amount: number;
+  rank: 1 | 2 | 3;
+}
