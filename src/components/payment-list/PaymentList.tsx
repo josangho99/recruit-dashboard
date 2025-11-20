@@ -1,5 +1,5 @@
 function PaymentList() {
-  return <div>PaymentList</div>;
+  return <div></div>;
 }
 
 export default PaymentList;
