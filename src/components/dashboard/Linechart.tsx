@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import type { PaymentItem } from "@/interfaces/payment.interface";
 import {
   Chart as ChartJS,
