@@ -37,6 +37,9 @@ export interface ExchangeResponse {
 
 export interface CountAccumulator {
   successCount: number;
+  failCount: number;
+  cancelledCount: number;
+  pendingCount: number;
   attemptCount: number;
 }
 

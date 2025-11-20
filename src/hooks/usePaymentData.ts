@@ -11,6 +11,10 @@ export default function usePaymentData() {
   const [exchangeValue, setExchangeValue] = useState("");
   const [successRate, setSuccessRate] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [successCount, setScucessCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [failCount, setFailCount] = useState(0);
+  const [cancelledCount, setCancelledCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,21 +62,39 @@ export default function usePaymentData() {
 
     const finalCounts: CountAccumulator = paymentList.reduce(
       (acc: CountAccumulator, item: PaymentItem) => {
-        if (item.status === "SUCCESS" || item.status === "CANCELLED" || item.status === "FAILED") {
-          acc.attemptCount += 1;
-        }
-        if (item.status === "SUCCESS" || item.status === "CANCELLED") {
-          acc.successCount += 1;
+        switch (item.status) {
+          case "SUCCESS":
+            acc.attemptCount += 1;
+            acc.successCount += 1;
+            break;
+          case "PENDING":
+            acc.pendingCount += 1;
+            break;
+          case "CANCELLED":
+            acc.attemptCount += 1;
+            acc.cancelledCount += 1;
+            break;
+          case "FAILED":
+            acc.attemptCount += 1;
+            acc.failCount += 1;
+            break;
         }
         return acc;
       },
-      { successCount: 0, attemptCount: 0 },
+      { successCount: 0, attemptCount: 0, failCount: 0, cancelledCount: 0, pendingCount: 0 },
     );
 
     const totalAttempt = finalCounts.attemptCount;
 
-    const rate = totalAttempt > 0 ? (finalCounts.successCount / totalAttempt) * 100 : 0;
+    const rate =
+      totalAttempt > 0
+        ? (Number(finalCounts.successCount + finalCounts.cancelledCount) / totalAttempt) * 100
+        : 0;
     setSuccessRate(rate);
+    setScucessCount(finalCounts.successCount);
+    setFailCount(finalCounts.failCount);
+    setPendingCount(finalCounts.pendingCount);
+    setCancelledCount(finalCounts.cancelledCount);
   }, [paymentList]);
 
   const merchantRankings = useMemo(() => {
@@ -112,5 +134,9 @@ export default function usePaymentData() {
     exchangeValue,
     loading,
     merchantRankings,
+    successCount,
+    failCount,
+    cancelledCount,
+    pendingCount,
   };
 }
