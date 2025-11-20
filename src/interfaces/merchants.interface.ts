@@ -28,9 +28,22 @@ export interface MerchantsDetail {
   updatedAt: string;
 }
 
+export interface MerchantsDetailResponse {
+  status: number;
+  message: string;
+  data: MerchantsDetail;
+}
+
 export interface MerchantsRanking {
   mchtCode: string;
   totalAmount: number;
+}
+
+export interface CountMerchants {
+  activeCount: number;
+  inactiveCount: number;
+  closedCount: number;
+  readyCount: number;
 }
 
 export interface PodiumStepProps {
