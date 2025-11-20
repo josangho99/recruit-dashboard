@@ -57,7 +57,7 @@ function PieChart({ paymentList }: { paymentList: PaymentItem[] | null }) {
   return (
     <div className="flex h-110 w-[38vw] flex-col items-center gap-4 bg-white pt-4 pb-15">
       <div>
-        <span className="text-xl">디바이스별 결제 횟수</span>
+        <span className="text-2xl">디바이스별 결제 횟수</span>
       </div>
       {payTypeData.datasets.length > 0 ? (
         <Pie data={payTypeData} />

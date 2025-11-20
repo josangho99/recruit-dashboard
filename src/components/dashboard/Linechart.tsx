@@ -65,7 +65,7 @@ function Linechart({
   return (
     <div className="flex h-120 w-full flex-col items-center justify-center bg-white p-8">
       <div>
-        <span className="text-xl">일자별 거래 그래프</span>
+        <span className="text-2xl">일자별 거래 그래프</span>
       </div>
       {aggregatedData.datasets.length > 0 ? (
         <Line options={options} data={aggregatedData} />
