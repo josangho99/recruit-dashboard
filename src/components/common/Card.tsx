@@ -6,13 +6,19 @@ const Card: React.FC<CardProps> = ({ title = "제목", context = "내용", icon 
     switch (title) {
       case "거래실패":
         return "text-5xl text-[red]";
+      case "중지":
+        return "text-5xl text-yellow-400";
       case "환불":
         return "text-5xl text-yellow-400";
+      case "폐기":
+        return "text-5xl text-[red]";
       case "총 가맹점 수":
         return "text-5xl text-sky-500";
       case "총 정산 금액":
         return "text-5xl text-yellow-400";
       case "거래대기":
+        return "text-5xl text-gray-600";
+      case "대기":
         return "text-5xl text-gray-600";
 
       default:

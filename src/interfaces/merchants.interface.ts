@@ -33,6 +33,13 @@ export interface MerchantsRanking {
   totalAmount: number;
 }
 
+export interface CountMerchants {
+  activeCount: number;
+  inactiveCount: number;
+  closedCount: number;
+  readyCount: number;
+}
+
 export interface PodiumStepProps {
   mchtName: string;
   amount: number;

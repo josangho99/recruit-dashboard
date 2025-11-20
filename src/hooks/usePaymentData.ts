@@ -2,7 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import { getExchangeValue, getPaymentList } from "@/services/paymentService";
 import { getMerchantsList } from "@/services/merchantsService";
 import type { PaymentItem, CountAccumulator } from "@/interfaces/payment.interface";
-import type { MerchantsItem, MerchantsRanking } from "@/interfaces/merchants.interface";
+import type {
+  MerchantsItem,
+  MerchantsRanking,
+  CountMerchants,
+} from "@/interfaces/merchants.interface";
 
 export default function usePaymentData() {
   const [paymentList, setPaymentList] = useState<PaymentItem[] | null>(null);
@@ -11,10 +15,15 @@ export default function usePaymentData() {
   const [exchangeValue, setExchangeValue] = useState("");
   const [successRate, setSuccessRate] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [successCount, setScucessCount] = useState(0);
+  const [successCount, setSuccessCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
   const [failCount, setFailCount] = useState(0);
   const [cancelledCount, setCancelledCount] = useState(0);
+
+  const [activeCount, setActiveCount] = useState(0);
+  const [readyCount, setReadyCount] = useState(0);
+  const [inactiveCount, setInactiveCount] = useState(0);
+  const [closedCount, setClosedCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,11 +100,41 @@ export default function usePaymentData() {
         ? (Number(finalCounts.successCount + finalCounts.cancelledCount) / totalAttempt) * 100
         : 0;
     setSuccessRate(rate);
-    setScucessCount(finalCounts.successCount);
+    setSuccessCount(finalCounts.successCount);
     setFailCount(finalCounts.failCount);
     setPendingCount(finalCounts.pendingCount);
     setCancelledCount(finalCounts.cancelledCount);
   }, [paymentList]);
+
+  useEffect(() => {
+    if (!merchantsList || merchantsList.length === 0) {
+      return;
+    }
+    const finalMerchantsCounts: CountMerchants = merchantsList.reduce(
+      (acc: CountMerchants, item: MerchantsItem) => {
+        switch (item.status) {
+          case "ACTIVE":
+            acc.activeCount += 1;
+            break;
+          case "INACTIVE":
+            acc.inactiveCount += 1;
+            break;
+          case "CLOSED":
+            acc.closedCount += 1;
+            break;
+          case "READY":
+            acc.readyCount += 1;
+            break;
+        }
+        return acc;
+      },
+      { activeCount: 0, inactiveCount: 0, readyCount: 0, closedCount: 0 },
+    );
+    setActiveCount(finalMerchantsCounts.activeCount);
+    setInactiveCount(finalMerchantsCounts.inactiveCount);
+    setReadyCount(finalMerchantsCounts.readyCount);
+    setClosedCount(finalMerchantsCounts.closedCount);
+  }, [merchantsList]);
 
   const merchantRankings = useMemo(() => {
     if (!paymentList || paymentList.length === 0) {
@@ -138,5 +177,9 @@ export default function usePaymentData() {
     failCount,
     cancelledCount,
     pendingCount,
+    closedCount,
+    activeCount,
+    inactiveCount,
+    readyCount,
   };
 }
