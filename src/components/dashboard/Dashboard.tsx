@@ -5,6 +5,8 @@ import { getMerchantsList } from "@/services/merchantsService";
 import type { PaymentItem, CountAccumulator } from "@/interfaces/payment.interface";
 import type { MerchantsItem } from "@/interfaces/merchants.interface";
 import { faClipboardList, faCoins, faPercent, faStore } from "@fortawesome/free-solid-svg-icons";
+import Linechart from "./Linechart";
+import PieChart from "./PieChart";
 
 function Dashboard() {
   const [paymentList, setPaymentList] = useState<PaymentItem[] | null>(null);
@@ -125,6 +127,13 @@ function Dashboard() {
           title="결제 성공률"
           icon={faPercent}
           context={`${successRate.toFixed(2)}` + "%"}></Card>
+      </div>
+      <div className="mt-8 flex w-full justify-center bg-white">
+        <Linechart paymentList={paymentList} exChangeValue={exchangeValue}></Linechart>
+      </div>
+      <div className="mt-8 flex w-full justify-between">
+        <PieChart paymentList={paymentList}></PieChart>
+        <PieChart paymentList={paymentList}></PieChart>
       </div>
     </div>
   );

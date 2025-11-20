@@ -39,3 +39,7 @@ export interface CountAccumulator {
   successCount: number;
   attemptCount: number;
 }
+
+export interface PayTypeCount {
+  [key: string]: number;
+}
