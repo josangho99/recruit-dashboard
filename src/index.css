@@ -17,3 +17,11 @@ a:hover {
 input:focus {
   outline: none;
 }
+
+body {
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
