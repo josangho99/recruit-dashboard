@@ -2,8 +2,8 @@ import Card from "@/components/common/Card";
 import MerchantsRankingList from "@/components/dashboard/MerchantsRankingList";
 import usePaymentData from "@/hooks/usePaymentData";
 import { faClipboardList, faCoins, faPercent, faStore } from "@fortawesome/free-solid-svg-icons";
-import Linechart from "./Linechart";
-import PieChart from "./PieChart";
+import Linechart from "@/components/dashboard/Linechart";
+import PieChart from "@/components/dashboard/PieChart";
 
 function Dashboard() {
   const {
