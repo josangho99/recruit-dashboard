@@ -25,3 +25,7 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+select {
+  outline: none;
+}

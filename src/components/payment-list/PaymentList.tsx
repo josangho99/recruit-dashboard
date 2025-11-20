@@ -19,16 +19,36 @@ const getStatusClasses = (status: string) => {
 function PaymentList() {
   const { paymentList, merchantsList } = usePaymentData();
   const [currentPage, setCurrentPage] = useState(1);
-  const TOTAL_ITEMS = paymentList?.length ?? 0;
+  const [filterStatus, setFilterStatus] = useState<string>("ALL");
+  const [filterPayType, setFilterPayType] = useState<string>("ALL");
   const ITEMS_PER_PAGE = 10;
   const PAGE_COUNT_IN_GROUP = 5;
+
+  const filteredList = useMemo(() => {
+    // ⚠️ 원본 리스트가 null이거나 없으면 빈 배열 반환
+    if (!paymentList || paymentList.length === 0) {
+      return [];
+    }
+
+    let tempFilteredList = paymentList;
+
+    if (filterStatus !== "ALL") {
+      tempFilteredList = tempFilteredList.filter((item) => item.status === filterStatus);
+    }
+
+    if (filterPayType !== "ALL") {
+      tempFilteredList = tempFilteredList.filter((item) => item.payType === filterPayType);
+    }
+
+    return tempFilteredList;
+  }, [paymentList, filterStatus, filterPayType]);
 
   const currentItems = useMemo(() => {
     const endIndex = currentPage * ITEMS_PER_PAGE;
     const startIndex = endIndex - ITEMS_PER_PAGE;
 
-    return paymentList?.slice(startIndex, endIndex);
-  }, [paymentList, currentPage]);
+    return filteredList?.slice(startIndex, endIndex);
+  }, [filteredList, currentPage]);
 
   const formatDateTime = (dateString: string) => {
     if (!dateString) return "";
@@ -44,10 +64,35 @@ function PaymentList() {
     }
   };
 
+  const TOTAL_ITEMS = filteredList?.length ?? 0;
+
   const thClass = "py-5 text-center text-base font-semibold text-gray-600 uppercase";
 
   return (
-    <div className="flex h-[72vh] w-full flex-col rounded-xl bg-white shadow-lg">
+    <div className="flex h-full w-full flex-col rounded-xl bg-white shadow-lg">
+      <div className="flex flex-row gap-4 p-4">
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="w-25 rounded-lg border border-gray-300 p-2 transition duration-150 focus:border-[#3AC48D] focus:ring-2 focus:ring-[#3AC48D]">
+          <option value="ALL">전체</option>
+          <option value="SUCCESS">성공</option>
+          <option value="FAILED">실패</option>
+          <option value="CANCELLED">취소</option>
+          <option value="PENDING">대기</option>
+        </select>
+        <select
+          value={filterPayType}
+          onChange={(e) => setFilterPayType(e.target.value)}
+          className="w-25 rounded-lg border border-gray-300 p-2 transition duration-150 focus:border-[#3AC48D] focus:ring-2 focus:ring-[#3AC48D]">
+          <option value="ALL">전체</option>
+          <option value="ONLINE">온라인</option>
+          <option value="DEVICE">단말기</option>
+          <option value="MOBILE">모바일</option>
+          <option value="VACT">가상계좌</option>
+          <option value="BILLING">정기결제</option>
+        </select>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full table-fixed divide-y divide-gray-200">
           <thead className="border-gray-400 bg-gray-200">
@@ -57,7 +102,6 @@ function PaymentList() {
               <th className={thClass + "w-12"}>가맹점 코드</th>
               <th className={thClass + "w-12"}>가맹점 이름</th>
               <th className={thClass + "w-12"}>금액</th>
-
               <th className={thClass + "w-12"}>수단</th>
               <th className={thClass + "w-12"}>상태</th>
               <th className={thClass + "w-12"}>결제 일시</th>
