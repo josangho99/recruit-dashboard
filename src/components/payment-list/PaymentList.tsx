@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import usePaymentData from "@/hooks/usePaymentData";
 import Pagination from "@/components/common/Pagenation";
 import { getMerchantName } from "@/hooks/useMerchantsData";
-
+import { formatDateTime } from "@/utils/stringToDate";
 const getStatusClasses = (status: string) => {
   switch (status) {
     case "SUCCESS":
@@ -25,7 +25,6 @@ function PaymentList() {
   const PAGE_COUNT_IN_GROUP = 5;
 
   const filteredList = useMemo(() => {
-    // ⚠️ 원본 리스트가 null이거나 없으면 빈 배열 반환
     if (!paymentList || paymentList.length === 0) {
       return [];
     }
@@ -49,20 +48,6 @@ function PaymentList() {
 
     return filteredList?.slice(startIndex, endIndex);
   }, [filteredList, currentPage]);
-
-  const formatDateTime = (dateString: string) => {
-    if (!dateString) return "";
-    try {
-      const date = new Date(dateString);
-      return (
-        date.toLocaleDateString("ko-KR") +
-        " " +
-        date.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false })
-      );
-    } catch {
-      return dateString;
-    }
-  };
 
   const TOTAL_ITEMS = filteredList?.length ?? 0;
 
@@ -111,7 +96,9 @@ function PaymentList() {
           <tbody className="divide-y divide-gray-300 bg-white">
             {currentItems?.map((item, index) => (
               <tr key={item.paymentCode} className="transition duration-150 hover:bg-[#3AC48D]">
-                <td className="py-3 text-center text-sm text-gray-500">{index + 1}</td>
+                <td className="py-3 text-center text-sm text-gray-500">
+                  {(currentPage - 1) * 10 + index + 1}
+                </td>
                 <td className="px-3 py-3 text-center text-sm font-medium text-gray-900">
                   {item.paymentCode}
                 </td>

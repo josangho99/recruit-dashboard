@@ -28,6 +28,12 @@ export interface MerchantsDetail {
   updatedAt: string;
 }
 
+export interface MerchantsDetailResponse {
+  status: number;
+  message: string;
+  data: MerchantsDetail;
+}
+
 export interface MerchantsRanking {
   mchtCode: string;
   totalAmount: number;

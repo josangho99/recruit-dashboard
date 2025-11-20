@@ -1,16 +1,19 @@
 import { useState, useMemo } from "react";
 import usePaymentData from "@/hooks/usePaymentData";
 import Pagination from "@/components/common/Pagenation";
+import MerchantsDetailModal from "@/components/merchants-list/MerchantsDetailModal";
+import { getStatusClasses } from "@/hooks/useMerchantsData";
 
 export default function MerchantsList() {
   const { merchantsList } = usePaymentData();
   const [currentPage, setCurrentPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMchtCode, setSelectedMchtCode] = useState<string | null>(null);
   const ITEMS_PER_PAGE = 10;
   const PAGE_COUNT_IN_GROUP = 5;
 
   const filteredList = useMemo(() => {
-    // ⚠️ 원본 리스트가 null이거나 없으면 빈 배열 반환
     if (!merchantsList || merchantsList.length === 0) {
       return [];
     }
@@ -32,19 +35,14 @@ export default function MerchantsList() {
   }, [filteredList, currentPage]);
   const TOTAL_ITEMS = filteredList?.length ?? 0;
 
-  const getStatusClasses = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "text-green-700 bg-green-100 border-green-200";
-      case "READY":
-        return "text-yellow-700 bg-yellow-100 border-yellow-200";
-      case "INACTIVE":
-        return "text-blue-700 bg-blue-100 border-blue-200";
-      case "CLOSED":
-        return "text-red-700 bg-red-100 border-red-200";
-      default:
-        return "text-gray-600 bg-gray-100 border-gray-200";
-    }
+  const handleRowClick = (mchtCode: string) => {
+    setSelectedMchtCode(mchtCode);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedMchtCode(null);
   };
 
   const thClass = "py-5 text-center text-base font-semibold text-gray-600 uppercase";
@@ -77,8 +75,13 @@ export default function MerchantsList() {
 
           <tbody className="divide-y divide-gray-300 bg-white">
             {currentItems?.map((item, index) => (
-              <tr key={item.mchtCode} className="transition duration-150 hover:bg-[#3AC48D]">
-                <td className="py-3 text-center text-sm text-gray-500">{index + 1}</td>
+              <tr
+                key={item.mchtCode}
+                onClick={() => handleRowClick(item.mchtCode)}
+                className="transition duration-150 hover:bg-[#3AC48D]">
+                <td className="py-3 text-center text-sm text-gray-500">
+                  {(currentPage - 1) * 10 + index + 1}
+                </td>
                 <td className="px-3 py-3 text-center text-sm font-medium text-gray-900">
                   {item.mchtCode}
                 </td>
@@ -113,6 +116,14 @@ export default function MerchantsList() {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}></Pagination>
       </div>
+
+      {isModalOpen && selectedMchtCode && (
+        <MerchantsDetailModal
+          mchtCode={selectedMchtCode}
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </div>
   );
 }
